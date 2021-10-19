@@ -31,6 +31,7 @@ contract StarNotary is ERC721("Star", "STR") {
         return payable(address(uint160(x)));
     }
 
+    // TODO: Share solution here https://knowledge.udacity.com/questions/684111
     function allowBuying(uint256 _tokenId, address _by) public {
         approve(_by, _tokenId);
     }
