@@ -57,25 +57,25 @@ contract StarNotary is ERC721("Star", "STR") {
         }
     }
 
-    function sellStar(uint256 _tokenId, address buyer) public  payable {
-        require(starsForSale[_tokenId] > 0, "The Star should be up for sale");
+    // function sellStar(uint256 _tokenId, address buyer) public  payable {
+    //     require(starsForSale[_tokenId] > 0, "The Star should be up for sale");
 
-        uint256 starCost = starsForSale[_tokenId];
-        address ownerAddress = msg.sender;
+    //     uint256 starCost = starsForSale[_tokenId];
+    //     address ownerAddress = msg.sender;
 
-        require(buyer.balance > starCost, "You need to have enough Ether to buy this star");
+    //     require(buyer.balance > starCost, "You need to have enough Ether to buy this star");
 
-        // Transfer the token ownership
-        transferFrom(ownerAddress, buyer, _tokenId); // We can't use _addTokenTo or_removeTokenFrom functions, now we have to use _transferFrom
-        address payable ownerAddressPayable = _make_payable(ownerAddress); // We need to make this conversion to be able to use transfer() function to transfer ethers
+    //     // Transfer the token ownership
+    //     transferFrom(ownerAddress, buyer, _tokenId); // We can't use _addTokenTo or_removeTokenFrom functions, now we have to use _transferFrom
+    //     address payable ownerAddressPayable = _make_payable(ownerAddress); // We need to make this conversion to be able to use transfer() function to transfer ethers
         
-        // Transfer token cost to the previous owner
-        ownerAddressPayable.transfer(starCost);
+    //     // Transfer token cost to the previous owner
+    //     ownerAddressPayable.transfer(starCost);
 
-        if(buyer.balance > starCost) {
-            // Transfer change to the new owner
-            _make_payable(buyer).transfer(buyer.balance - starCost);
-        }
-    }
+    //     if(buyer.balance > starCost) {
+    //         // Transfer change to the new owner
+    //         _make_payable(buyer).transfer(buyer.balance - starCost);
+    //     }
+    // }
 
 }
