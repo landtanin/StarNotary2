@@ -64,8 +64,9 @@ it('lets user1 get the funds after the sale', async() => {
     let balanceOfUser2BeforeTransaction = await web3.eth.getBalance(user2);
     
     // give user2 one time approval to transfer token with ID = starId
-    await instance.allowBuying(starId, user2, {from: user1, gasPrice:0});
-    const receipt = await instance.buyStar(starId, {from: user2, value: balance, gasPrice:0});
+    const receipt = await instance.allowBuying(starId, user2, {from: user1});
+    // we can add `gasPrice:0` to the trailing closure and ignore the fee calculation below
+    await instance.buyStar(starId, {from: user2, value: balance});
     
     let balanceOfUser1AfterTransaction = await web3.eth.getBalance(user1);
     let actual = Number(balanceOfUser1AfterTransaction);
@@ -83,15 +84,11 @@ it('lets user1 get the funds after the sale', async() => {
     const tx = await web3.eth.getTransaction(receipt.tx);
     const gasPrice = tx.gasPrice;
     console.log(`GasPrice: ${tx.gasPrice}`);
-    
-    // undefined
-    // let actualFee = receipt.receipt.fee;
-    // console.log(`actualFee: ${actualFee}`);
 
     let fee = Number(gasPrice) * Number(gasUsed);
     console.log('total fee: ' + fee);
     console.log('starPrice: ' + starPrice);
-    let exp = Number(balanceOfUser1BeforeTransaction) + Number(starPrice);
+    let exp = Number(balanceOfUser1BeforeTransaction) + Number(starPrice) - Number(fee);
     console.log('exp: ' + exp);
     
     assert.equal(actual, exp);
